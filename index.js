@@ -1,14 +1,29 @@
+const { Builder, By, Key, until } = require("selenium-webdriver");
+require("chromedriver");
 
-// assign office number
-const officeNumber = 7058;
 
-//assign mobile number
-const mobileNumber = 3346
+async function fetchFromIWork() {
+  let driver = await new Builder().forBrowser("chrome").build();
+  try {
+    await driver.get("https://www.iworkplc.com/contact");
+    var officeNumber = await driver
+      .findElement(By.xpath("//div[@id='comp-kktfmgn8']/p[@class='font_9']/span[@class='color_15']")).getText();
+    var mobileNumber = await driver
+      .findElement(By.xpath("//div[@id='comp-ks7htvty']/p[@class='font_9']/span[@class='color_15']")).getText();
 
-// get the result
-const Result = officeNumber / mobileNumber;
 
-//log the output
-console.log(Result)
+    //Cnvert value to float
+     officeNumber = parseFloat(officeNumber.slice(14));
+     mobileNumber = parseFloat(mobileNumber.slice(13));
 
-// IT IS WORKING PERFECTLY :)
+    console.log(officeNumber / mobileNumber)
+
+
+
+  } finally {
+    await driver.quit();
+  }
+}
+
+fetchFromIWork();
+//it is working :)
